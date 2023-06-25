@@ -10,27 +10,28 @@ import jakarta.persistence.Table;
 
 
 /**
- * User for authentication with our website.
+ * @author Sailesh
+ * A class for User.
  */
 @Entity
 @Table(name = "local_user")
 public class User {
 
+    /**
+     * default constructor for the order.
+     */
     public User() {
 
     }
+
+    /**
+     * parameterised constructor for the order.
+     */
     public User(String email, String name) {
         this.email = email;
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     /** Unique id for the user. */
     @Id
@@ -38,7 +39,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
+    /** The  email of the user. */
     @Column(name = "email", nullable = false, unique = true, length = 320)
     private String email;
 
@@ -47,21 +48,49 @@ public class User {
     private String name;
 
 
+    /**
+     * @return return the id of the cart
+     */
+    public Long getId() {
+        return id;
+    }
+
+
+    /**
+     * @param id set the id to the cart
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+    /**
+     * @return return the name of the user
+     */
     public String getName() {
         return name;
     }
 
 
+    /**
+     * @param name set the name to the user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
 
+    /**
+     * @return return the email of the user
+     */
+
     public String getEmail() {
         return email;
     }
 
-
+    /**
+     * @param email set the email to the user
+     */
     public void setEmail(String email) {
         this.email = email;
     }

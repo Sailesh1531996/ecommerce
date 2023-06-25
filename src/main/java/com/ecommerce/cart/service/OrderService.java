@@ -11,28 +11,52 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Sailesh
+ * Service for handling order actions.
+ */
 @Service
 public class OrderService {
+
+    /** The Order DAO. */
     private final OrderDAO orderDAO;
+
+    /** The Product DAO. */
     private final ProductDAO productDAO;
 
+    /** The shoppingCart DAO. */
     private ShoppingCartDAO shoppingCartDAO;
+
+    /**
+     * Parameterised Constructor of Order Service
+     * @param orderDAO
+     * @param productDAO
+     * @param shoppingCartDAO
+     */
     public OrderService(OrderDAO orderDAO, ProductDAO productDAO, ShoppingCartDAO shoppingCartDAO) {
         this.orderDAO = orderDAO;
         this.productDAO = productDAO;
         this.shoppingCartDAO =shoppingCartDAO;
     }
 
+    /**
+     * To get the order details
+     * @param orderId
+     * @return
+     */
     public Order getOrderDetail(Long orderId) {
         Optional<Order> order = this.orderDAO.findById(orderId);
         return order.isPresent() ? order.get() : null;
     }
 
 
+    /**
+     * To the cart amount
+     * @param shoppingCartList
+     * @return
+     */
 
-    public double getCartAmount(List<ShoppingCart> shoppingCartList) {
-
-        double totalCartAmount = 0;
+    public void getCartAmount(List<ShoppingCart> shoppingCartList) {
         double singleCartAmount = 0;
         int availableQuantity = 0;
 
@@ -49,7 +73,6 @@ public class OrderService {
                     singleCartAmount = cart.getQuantity() * product1.getPrice();
                     availableQuantity = product1.getAvailableQuantity() - cart.getQuantity();
                 }
-                totalCartAmount = totalCartAmount + singleCartAmount;
                 product1.setAvailableQuantity(availableQuantity);
                 availableQuantity=0;
                 cart.setProductName(product1.getName());
@@ -57,8 +80,13 @@ public class OrderService {
                 productDAO.save(product1);
             }
         }
-        return totalCartAmount;
     }
+
+    /**
+     * To save the order in the order DAO
+     * @param order
+     * @return
+     */
 
     public Order saveOrder(Order order) {
         return orderDAO.save(order);

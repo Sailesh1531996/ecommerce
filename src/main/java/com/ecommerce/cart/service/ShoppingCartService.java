@@ -14,20 +14,40 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Sailesh
+ * Service for handling Shopping Cart actions.
+ */
 @Service
 public class ShoppingCartService {
+
+
+    /** The Shopping Cart DAO. */
     private final ShoppingCartDAO shoppingCartDAO;
+
+    /** The Product Order DAO. */
     private final ProductDAO productDAO;
 
+    /** The Order DAO. */
     private final OrderDAO orderDAO ;
     private final Logger logger = LoggerFactory.getLogger(ShoppingCartService.class);
 
+    /**
+     *Parameterised constructor for the Shopping Cart .
+     * @param shoppingCartDAO
+     * @param productDAO
+     * @param orderDAO
+     */
     public ShoppingCartService(ShoppingCartDAO shoppingCartDAO, ProductDAO productDAO, OrderDAO orderDAO) {
         this.shoppingCartDAO = shoppingCartDAO;
         this.productDAO = productDAO;
         this.orderDAO = orderDAO;
     }
 
+    /**
+     *To delete an item from the table by id
+     * @param itemId
+     */
     public void deleteItem(Long itemId) {
         Optional<ShoppingCart> item = shoppingCartDAO.findById(itemId);
         if(item.isPresent()){
@@ -46,13 +66,17 @@ public class ShoppingCartService {
         }
     }
 
+    /**
+     *To update the quantity of the item in the cart or order .
+     * @param itemId
+     * @param columnValue
+     */
     public void updateCartItemQuantity(Long itemId, int columnValue) {
         int actualQuantity = 0;
         double singleCartAmount = 0.0;
         int availableQuantity = 0;
         Optional<ShoppingCart> existingItem = shoppingCartDAO.findById(itemId);
         ShoppingCart shoppingCart;
-
         if(existingItem.isPresent()) {
             shoppingCart = existingItem.get();
             actualQuantity = shoppingCart.getQuantity();
@@ -82,6 +106,10 @@ public class ShoppingCartService {
         shoppingCartDAO.save(shoppingCart);
     }
 
+    /**
+     *To add an item in to the cart or order .
+     * @param cartItemBody
+     */
     public void addItem(CartItemBody cartItemBody) {
         double singleCartAmount = 0;
         int availableQuantity = 0;

@@ -6,6 +6,9 @@ public class CartItemBody {
     private Long orderId;
     private int quantity;
 
+    public CartItemBody() {
+    }
+
     public CartItemBody(Long productId, Long orderId, int quantity) {
         this.productId = productId;
         this.orderId = orderId;
